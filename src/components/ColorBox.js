@@ -33,7 +33,7 @@ class ColorBox extends Component {
       }
     };
     return (
-      <div>
+      <div className="color-box__container">
         <div
           className="color-box"
           style={ styles.color_box__background }

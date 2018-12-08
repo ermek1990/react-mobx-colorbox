@@ -10,18 +10,19 @@ class App extends Component {
         <div className="container">
           <div className="center">
             {
-              this.props.store.containerItems.map((container, index) => {
-                return  <Container
-                          key={index}
-                          containerId = { container.containerId }
-                          colorBoxList = { container.colorBoxList }
-                          containerList = { container.containerList }
-                          updateColorBoxValue = { this.props.store.updateColorBoxValue }
-                          addNewContainerToContainer = { this.props.store.addNewContainerToContainer }
-                          addNewColorBoxToContainer = { this.props.store.addNewColorBoxToContainer }
-                          removeColorBoxFromContainer = { this.props.store.removeColorBoxFromContainer }
-                        />;
-              })
+              this.props.store.containerItems.map((container, index) =>
+              (
+                <Container
+                  key={index}
+                  containerId = { container.containerId }
+                  colorBoxList = { container.colorBoxList }
+                  containerList = { container.containerList }
+                  updateColorBoxValue = { this.props.store.updateColorBoxValue }
+                  addNewContainerToContainer = { this.props.store.addNewContainerToContainer }
+                  addNewColorBoxToContainer = { this.props.store.addNewColorBoxToContainer }
+                  removeColorBoxFromContainer = { this.props.store.removeColorBoxFromContainer }
+                />
+              ))
             }
           </div>
         </div>

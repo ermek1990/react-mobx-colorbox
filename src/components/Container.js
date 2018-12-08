@@ -5,11 +5,10 @@ import ColorBox from './ColorBox';
 class Container extends Component {
   state = {
     containerId: this.props.containerId,
-    colorBoxList: this.props.colorBoxList,
-    containerList: this.props.containerList,
+    buttonHover: false,
   };
   
-  handleAddBox = () => {
+  handleAddColorBox = () => {
     this.props.addNewColorBoxToContainer(this.state.containerId);
   };
 
@@ -21,12 +20,20 @@ class Container extends Component {
     this.props.removeColorBoxFromContainer(colorBoxId, this.state.containerId);
   };
 
+  handleButtonHover = () => {
+    this.setState({ buttonHover: true });
+  };
+
+  handleButtonUnhover = () => {
+    this.setState({ buttonHover: false });
+  };
+
   render() {
     return(
       <div>
         <div className="container__field">
           {
-            this.state.colorBoxList.map((colorBox, index) => {
+            this.props.colorBoxList.map((colorBox, index) => {
               return <ColorBox
                         key={index}
                         colorBoxId = { colorBox.colorBoxId }
@@ -35,33 +42,55 @@ class Container extends Component {
             })
           }
           {
-            this.state.containerList.map((container, index) => {
-              return null;
+            this.props.containerList.map((container, index) => {
+              return  <Container
+                        key={index}
+                        containerId = { container.containerId }
+                        colorBoxList = { container.colorBoxList }
+                        containerList = { container.containerList }
+                        updateColorBoxValue = { this.props.updateColorBoxValue }
+                        addNewContainerToContainer = { this.props.addNewContainerToContainer }
+                        addNewColorBoxToContainer = { this.props.addNewColorBoxToContainer }
+                        removeColorBoxFromContainer = { this.props.removeColorBoxFromContainer }
+                      />;
             })
           }
-          <button
-            className="has-tooltip"
-          >
-            <strong>ADD</strong>
-          </button>
-          <span
-            className="tooltip"
+          <div
+            className="button__container"
+            onMouseOver={ this.handleButtonHover }
+            onMouseLeave={ this.handleButtonUnhover }
           >
             <button
-              onClick={ this.handleAddBox }
+              className="has-tooltip"
             >
-              <strong>Box</strong>
+              <strong>ADD</strong>
             </button>
-            <button
-              onClick={ this.handleAddContainer }
-            >
-              <strong>Container</strong>
-            </button>
-          </span>
+            {
+              this.state.buttonHover ?
+              (
+                <span
+                  className="tooltip"
+                >
+                  <button
+                    className="btn__tooltip"
+                    onClick={ this.handleAddColorBox }
+                  >
+                    <strong>Box</strong>
+                  </button>
+                  <button
+                    className="btn__tooltip"
+                    onClick={ this.handleAddContainer }
+                  >
+                    <strong>Container</strong>
+                  </button>
+                </span>
+              ) : null
+            }
+          </div>
         </div>
       </div>
     );
-  }
-}
+  };
+};
 
 export default observer(Container);

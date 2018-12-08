@@ -1,30 +1,17 @@
 import { observable, decorate, action } from 'mobx';
 import shortid from 'shortid';
 
-const initColorBoxId = shortid();
-const initColorBoxState = {
-  colorBoxId: initColorBoxId,
-  color: {
-    r: '241',
-    g: '112',
-    b: '19',
-    a: '1',
-  },
-};
-
 const initContainerState = {
   containerId: shortid(),
-  colorBoxList: [
-    {
-      colorBoxId: initColorBoxId,
-    }
-  ],
+  colorBoxList: [],
   containerList: [],
 };
 
 class AppState {
-  colorBoxItems = [ initColorBoxState ];
-  containerItems = [ initContainerState ];
+  colorBoxItems = [];
+  containerItems = [
+    initContainerState
+  ];
 
   addNewColorBoxToContainer = (containerId) => {
     const boxId = shortid();
@@ -37,58 +24,51 @@ class AppState {
         a: '1',
       },
     });
-    this.containerItems.map(
-      (container) => {
+    this.containerItems.map((container) => {
         if (container.containerId === containerId) {
           container.colorBoxList.push({
             colorBoxId: boxId,
           });
         }
         return container;
-      }
-    );
+    });
   };
 
   updateColorBoxValue = (colorBoxId, color) => {
-    this.colorBoxItems.map(
-      (colorBox) => {
-        if (colorBox.colorBoxId === colorBoxId) {
-          colorBox.color = color;
-        }
-        return colorBox;
+    this.colorBoxItems.map((colorBox) => {
+      if (colorBox.colorBoxId === colorBoxId) {
+        colorBox.color = color;
       }
-    );
+      return colorBox;
+    });
   };
-
+  
   addNewContainerToContainer = (containerId) => {
-    this.containerItems.map(
-      (container) => {
-        if (container.containerId === containerId) {
-          container.containerList.push({
-            containerId: shortid(),
-            colorBoxList: [
-              {
-                colorBoxId: shortid(),
-              }
-            ],
-            containerList: [],
-          });
-        }
-        return container;
+    const generatedId = shortid();
+    this.containerItems.map((container) => {
+      if (container.containerId === containerId) {
+        container.containerList.push({
+          containerId: generatedId,
+          colorBoxList: [],
+          containerList: [],
+        });
       }
-    );
-    console.log(this.containerItems[0].containerList.length);
+      return container;
+    });
+    this.containerItems.push({
+      containerId: generatedId,
+      colorBoxList: [],
+      containerList: [],
+    });
   };
 
   removeColorBoxFromContainer = (colorBoxId, containerId) => {
-    this.containerItems.map(
-      (container) => {
-        if (containerId === container.containerId)
-          return container.colorBoxList.filter(colorBox => colorBox.colorBoxId !== colorBoxId);
-        else
-          return container;
-      }
-    );
+    this.containerItems.map((container) => {
+      if (containerId === container.containerId)
+        return container.colorBoxList.filter(colorBox => colorBox.colorBoxId !== colorBoxId);
+      else
+        return container;
+    });
   };
 };
 
